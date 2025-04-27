@@ -4,7 +4,9 @@ import 'package:app_tarefas/src/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
 
 class RegisterScreen extends StatefulWidget {
-  const RegisterScreen({super.key});
+  final AuthService authService;
+
+  const RegisterScreen({super.key, required this.authService});
 
   @override
   State<RegisterScreen> createState() => _RegisterScreenState();
@@ -18,7 +20,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _obscureText = true;
   bool _isLoading = false;
 
-  final AuthService _auth = AuthService();
+  late final AuthService _auth;
+
+  @override
+  void initState() {
+    super.initState();
+    _auth = widget.authService;
+  }
 
   final _formKey = GlobalKey<FormState>();
 
@@ -80,6 +88,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       TextFormField(
+                        key: const Key('name'),
                         controller: _nameController,
                         style: const TextStyle(
                           color: Colors.black,
@@ -102,6 +111,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('email'),
                         controller: _emailController,
                         style: const TextStyle(
                           color: Colors.black,
@@ -124,6 +134,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       const SizedBox(height: 20),
                       TextFormField(
+                        key: const Key('password'),
                         controller: _passwordController,
                         validator: (value) {
                           if (value!.isEmpty) {
@@ -172,6 +183,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       const Spacer(),
                       Center(
                         child: ElevatedButton(
+                          key: const Key('registerButton'),
                           style: ButtonStyle(
                             backgroundColor: WidgetStateProperty.all(
                               const Color(0xFF9C3EC8),

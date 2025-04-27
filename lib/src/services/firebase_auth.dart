@@ -122,19 +122,19 @@ class AuthService {
   String _getErrorMessage(String errorCode) {
     switch (errorCode) {
       case 'user-not-found':
-      return 'Usuário não encontrado. Verifique o e-mail.';
-    case 'invalid-email':
-      return 'O e-mail fornecido é inválido. Verifique e tente novamente.';
-    case 'missing-password':
-      return 'A senha não foi fornecida.';
-    case 'wrong-password':
-      return 'Senha incorreta. Tente novamente.';
-    case 'invalid-credential':
-      return 'As credenciais fornecidas estão incorretas, por favor, tente novamente.';
-    case 'expired-action-code':
-      return 'Este e-mail já está registrado. Por favor, use outro e-mail.';
-    default:
-      return 'Ocorreu um erro desconhecido. Tente novamente.';
+        return 'Usuário não encontrado. Verifique o e-mail.';
+      case 'invalid-email':
+        return 'O e-mail fornecido é inválido. Verifique e tente novamente.';
+      case 'missing-password':
+        return 'A senha não foi fornecida.';
+      case 'wrong-password':
+        return 'Senha incorreta. Tente novamente.';
+      case 'invalid-credential':
+        return 'As credenciais fornecidas estão incorretas, por favor, tente novamente.';
+      case 'expired-action-code':
+        return 'Este e-mail já está registrado. Por favor, use outro e-mail.';
+      default:
+        return 'Ocorreu um erro desconhecido. Tente novamente.';
     }
   }
 }

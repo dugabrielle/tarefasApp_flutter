@@ -1,4 +1,5 @@
 import 'package:app_tarefas/src/provider/theme_provider.dart';
+import 'package:app_tarefas/src/services/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -16,13 +17,22 @@ void main() async {
 
   User? user = FirebaseAuth.instance.currentUser;
 
-  runApp(MyApp(initialRoute: user != null ? '/home' : '/'));
+  final AuthService authService = AuthService();
+
+  runApp(
+    MyApp(initialRoute: user != null ? '/home' : '/', authService: authService),
+  );
 }
 
 class MyApp extends StatefulWidget {
   final String initialRoute;
+  final AuthService authService;
 
-  const MyApp({super.key, required this.initialRoute});
+  const MyApp({
+    super.key,
+    required this.initialRoute,
+    required this.authService,
+  });
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -44,17 +54,12 @@ class _MyAppState extends State<MyApp> {
             '/': (context) => WelcomeScreen(),
             '/login': (context) => LoginScreen(),
             '/home': (context) => HomeScreen(),
-            '/register': (context) => RegisterScreen(),
+            '/register':
+                (context) => RegisterScreen(authService: widget.authService),
             '/forgot': (context) => ForgotPasswordScreen(),
           },
         );
       },
     );
   }
-
-  /* void _alternarTema() {
-    setState(() {
-      _darkMode = !_darkMode;
-    }); 
-  } */
 }

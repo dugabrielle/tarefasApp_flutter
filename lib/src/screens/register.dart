@@ -2,6 +2,7 @@ import 'package:app_tarefas/src/services/firebase_auth.dart';
 import 'package:app_tarefas/src/widgets/input_decorations.dart';
 import 'package:app_tarefas/src/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:app_tarefas/src/services/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   final AuthService authService;
@@ -73,179 +74,184 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              height: 500,
-              width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Color(0xFFD5B1E3),
-                borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(40),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextFormField(
-                        key: const Key('name'),
-                        controller: _nameController,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                        ),
-                        decoration: InputStyleDecoration.style().copyWith(
-                          labelText: 'Nome de usuário',
-                          labelStyle: const TextStyle(
+            child: SingleChildScrollView(
+              child: Container(
+                height: 500,
+                width: double.infinity,
+                decoration: const BoxDecoration(
+                  color: Color(0xFFD5B1E3),
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(50)),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(40),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        TextFormField(
+                          key: const Key('name'),
+                          controller: _nameController,
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 22,
                           ),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                        ),
-                        validator: _validarNome,
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: const Key('email'),
-                        controller: _emailController,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                        ),
-                        decoration: InputStyleDecoration.style().copyWith(
-                          labelText: 'Email',
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                          ),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                        ),
-                        validator: _validarEmail,
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        key: const Key('password'),
-                        controller: _passwordController,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Por favor, digite a senha.";
-                          } else {
-                            bool result = validarSenha(value);
-                            if (result) {
-                              return null;
-                            } else {
-                              return "A senha deve conter entre 8 e 40 caracteres, ao menos uma letra maiúscula, uma minúscula, um caractere especial e um número.";
-                            }
-                          }
-                        },
-                        obscureText: _obscureText,
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 22,
-                        ),
-                        decoration: InputStyleDecoration.style().copyWith(
-                          labelText: 'Senha',
-                          labelStyle: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                          ),
-                          enabledBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide(color: Colors.black),
-                          ),
-                          suffixIcon: IconButton(
-                            icon: Icon(
-                              _obscureText
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
+                          decoration: InputStyleDecoration.style().copyWith(
+                            labelText: 'Nome de usuário',
+                            labelStyle: const TextStyle(
                               color: Colors.black,
+                              fontSize: 22,
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _obscureText = !_obscureText;
-                              });
-                            },
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          validator: _validarNome,
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          key: const Key('email'),
+                          controller: _emailController,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                          ),
+                          decoration: InputStyleDecoration.style().copyWith(
+                            labelText: 'Email',
+                            labelStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                            ),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                          ),
+                          validator: _validarEmail,
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          key: const Key('password'),
+                          controller: _passwordController,
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return "Por favor, digite a senha.";
+                            } else {
+                              bool result = validarSenha(value);
+                              if (result) {
+                                return null;
+                              } else {
+                                return "A senha deve conter entre 8 e 40 caracteres, ao menos uma letra maiúscula, uma minúscula, um caractere especial e um número.";
+                              }
+                            }
+                          },
+                          obscureText: _obscureText,
+                          style: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 22,
+                          ),
+                          decoration: InputStyleDecoration.style().copyWith(
+                            labelText: 'Senha',
+                            labelStyle: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                            ),
+                            enabledBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(color: Colors.black),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.black,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                      const Spacer(),
-                      Center(
-                        child: ElevatedButton(
-                          key: const Key('registerButton'),
-                          style: ButtonStyle(
-                            backgroundColor: WidgetStateProperty.all(
-                              const Color(0xFF9C3EC8),
+                        const Spacer(),
+                        Center(
+                          child: ElevatedButton(
+                            key: const Key('registerButton'),
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStateProperty.all(
+                                const Color(0xFF9C3EC8),
+                              ),
+                              fixedSize: WidgetStateProperty.all(
+                                const Size.fromWidth(130),
+                              ),
+                              padding: WidgetStateProperty.all(
+                                const EdgeInsets.all(16),
+                              ),
                             ),
-                            fixedSize: WidgetStateProperty.all(
-                              const Size.fromWidth(130),
-                            ),
-                            padding: WidgetStateProperty.all(
-                              const EdgeInsets.all(16),
-                            ),
-                          ),
-                          onPressed:
-                              _isLoading ? null : () => registrar(context),
-                          child:
-                              _isLoading
-                                  ? const CircularProgressIndicator(
-                                    strokeWidth: 2.0,
-                                    color: Color.fromARGB(255, 22, 87, 139),
-                                  )
-                                  : const Text(
-                                    'Registrar',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
+                            onPressed:
+                                _isLoading ? null : () => registrar(context),
+                            child:
+                                _isLoading
+                                    ? const CircularProgressIndicator(
+                                      strokeWidth: 2.0,
+                                      color: Color.fromARGB(255, 22, 87, 139),
+                                    )
+                                    : const Text(
+                                      'Registrar',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
-                                  ),
+                          ),
                         ),
-                      ),
-                      const Spacer(),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 10),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: GestureDetector(
-                            onTap: () {
-                              Navigator.pushReplacementNamed(context, '/login');
-                            },
-                            child: RichText(
-                              text: const TextSpan(
-                                text: 'Já tem uma conta? ',
-                                style: TextStyle(
-                                  color: Color(0xFF2E2E2E),
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
+                        const Spacer(),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10),
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.pushReplacementNamed(
+                                  context,
+                                  '/login',
+                                );
+                              },
+                              child: RichText(
+                                text: const TextSpan(
+                                  text: 'Já tem uma conta? ',
+                                  style: TextStyle(
+                                    color: Color(0xFF2E2E2E),
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                  children: [
+                                    TextSpan(
+                                      text: 'Entre',
+                                      style: TextStyle(
+                                        color: Color(0xFF003366),
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                children: [
-                                  TextSpan(
-                                    text: 'Entre',
-                                    style: TextStyle(
-                                      color: Color(0xFF003366),
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                  ),
-                                ],
                               ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -258,7 +264,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? _validarNome(String? nome) {
     if (nome == null || nome.isEmpty) {
-      return "Nome invalido";
+      return "Nome inválido";
     }
     return null;
   }
@@ -266,6 +272,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? _validarEmail(String? value) {
     if (value == null || value.isEmpty) {
       return 'O e-mail não pode estar vazio.';
+    } else if (!_auth.isValidEmail(value)) {
+      return 'Formato de e-mail inválido.';
     }
     return null;
   }

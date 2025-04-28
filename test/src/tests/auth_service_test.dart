@@ -10,16 +10,46 @@ import 'package:app_tarefas/src/services/firebase_auth.dart';
 
 @GenerateMocks([AuthService, UserCredential])
 void main() {
-  testWidgets('Teste da tela RegisterScreen', (WidgetTester tester) async {
+  testWidgets('deve exibir erros quando os campos estiverem vazios', (
+    WidgetTester tester,
+  ) async {
     final mockAuthService = MockAuthService();
     final mockUserCredential = MockUserCredential();
 
+    when(mockAuthService.isValidEmail(any)).thenReturn(false);
+
     when(
-      mockAuthService.signUpWithEmailPassword(
-        'teste@gmail.com',
-        'Senha12@',
-        'Nome',
-      ),
+      mockAuthService.signUpWithEmailPassword(any, any, any),
+    ).thenAnswer((_) async => mockUserCredential);
+
+    await tester.pumpWidget(
+      MaterialApp(home: RegisterScreen(authService: mockAuthService)),
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(Key('name')), '');
+    await tester.enterText(find.byKey(Key('email')), '');
+    await tester.enterText(find.byKey(Key('password')), '');
+
+    await tester.tap(find.byKey(Key('registerButton')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Nome inválido'), findsOneWidget);
+    expect(find.text('O e-mail não pode estar vazio.'), findsOneWidget);
+    expect(find.text('Por favor, digite a senha.'), findsOneWidget);
+  });
+
+  testWidgets('deve exibir erros quando os campos forem inválidos', (
+    WidgetTester tester,
+  ) async {
+    final mockAuthService = MockAuthService();
+    final mockUserCredential = MockUserCredential();
+
+    when(mockAuthService.isValidEmail(any)).thenReturn(false);
+
+    when(
+      mockAuthService.signUpWithEmailPassword(any, any, any),
     ).thenAnswer((_) async => mockUserCredential);
 
     await tester.pumpWidget(
@@ -29,19 +59,18 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byKey(Key('name')), 'Nome');
-    await tester.enterText(find.byKey(Key('email')), 'teste@gmail.com');
-    await tester.enterText(find.byKey(Key('password')), 'Senha12@');
+    await tester.enterText(find.byKey(Key('email')), 'teste@');
+    await tester.enterText(find.byKey(Key('password')), 'senha1@');
 
     await tester.tap(find.byKey(Key('registerButton')));
-
     await tester.pumpAndSettle();
 
-    verify(
-      mockAuthService.signUpWithEmailPassword(
-        'teste@gmail.com',
-        'Senha12@',
-        'Nome',
+    expect(find.text('Formato de e-mail inválido.'), findsOneWidget);
+    expect(
+      find.textContaining(
+        'A senha deve conter entre 8 e 40 caracteres, ao menos uma letra maiúscula, uma minúscula, um caractere especial e um número.',
       ),
-    ).called(1);
+      findsOneWidget,
+    );
   });
 }

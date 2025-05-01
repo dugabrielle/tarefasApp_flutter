@@ -54,7 +54,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             onPressed: () {
               Navigator.pushNamed(context, '/login');
             },
-            padding: const EdgeInsets.only(top: 40, left: 10),
+            padding: const EdgeInsets.only(top: 50, left: 10),
           ),
           const Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -76,7 +76,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
             alignment: Alignment.bottomCenter,
             child: SingleChildScrollView(
               child: Container(
-                height: 500,
                 width: double.infinity,
                 decoration: const BoxDecoration(
                   color: Color(0xFFD5B1E3),
@@ -157,6 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           decoration: InputStyleDecoration.style().copyWith(
                             labelText: 'Senha',
+                            errorMaxLines: 3,
                             labelStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 22,
@@ -182,7 +182,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             ),
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(height: 40),
                         Center(
                           child: ElevatedButton(
                             key: const Key('registerButton'),
@@ -215,7 +215,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     ),
                           ),
                         ),
-                        const Spacer(),
+                        const SizedBox(height: 40),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 10),
                           child: Align(
@@ -264,8 +264,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   String? _validarNome(String? nome) {
     if (nome == null || nome.isEmpty) {
-      return "Nome inválido";
+      return "O nome não pode estar vazio.";
     }
+
+    if (nome.length < 3 || nome.length > 30) {
+      return "O nome deve ter entre 3 e 30 caracteres.";
+    }
+
+    final nomeRegex = RegExp(r"^[A-Za-zÀ-ÿ\s'-]+$");
+    if (!nomeRegex.hasMatch(nome)) {
+      return "O nome contém caracteres inválidos.";
+    }
+
     return null;
   }
 

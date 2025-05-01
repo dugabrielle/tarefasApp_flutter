@@ -33,7 +33,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 40, left: 10),
+              padding: const EdgeInsets.only(top: 10, left: 10),
               child: Positioned(
                 child: IconButton(
                   onPressed: () {

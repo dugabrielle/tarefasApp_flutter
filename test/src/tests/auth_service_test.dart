@@ -32,10 +32,16 @@ void main() {
     await tester.enterText(find.byKey(Key('email')), '');
     await tester.enterText(find.byKey(Key('password')), '');
 
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+
     await tester.tap(find.byKey(Key('registerButton')));
+
+    await tester.pump(Duration(seconds: 3));
+
     await tester.pumpAndSettle();
 
-    expect(find.text('Nome inválido'), findsOneWidget);
+    expect(find.text('O nome não pode estar vazio.'), findsOneWidget);
     expect(find.text('O e-mail não pode estar vazio.'), findsOneWidget);
     expect(find.text('Por favor, digite a senha.'), findsOneWidget);
   });
@@ -58,13 +64,20 @@ void main() {
 
     await tester.pumpAndSettle();
 
-    await tester.enterText(find.byKey(Key('name')), 'Nome');
+    await tester.enterText(find.byKey(Key('name')), '');
     await tester.enterText(find.byKey(Key('email')), 'teste@');
     await tester.enterText(find.byKey(Key('password')), 'senha1@');
 
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+
     await tester.tap(find.byKey(Key('registerButton')));
+
+    await tester.pump(Duration(seconds: 3));
+
     await tester.pumpAndSettle();
 
+    expect(find.text('O nome contém caracteres inválidos.'), findsOneWidget);
     expect(find.text('Formato de e-mail inválido.'), findsOneWidget);
     expect(
       find.textContaining(
@@ -72,5 +85,6 @@ void main() {
       ),
       findsOneWidget,
     );
+    await Future.delayed(Duration(seconds: 3));
   });
 }

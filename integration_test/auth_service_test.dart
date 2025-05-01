@@ -9,3 +9,80 @@ import 'package:integration_test/integration_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:app_tarefas/src/services/firebase_auth.dart';
+
+void main() {
+  IntegrationTestWidgetsFlutterBinding.ensureInitialized();
+
+  testWidgets('deve exibir erros quando os campos estiverem vazios', (
+    WidgetTester tester,
+  ) async {
+    final mockAuthService = MockAuthService();
+    final mockUserCredential = MockUserCredential();
+
+    when(mockAuthService.isValidEmail(any)).thenReturn(false);
+
+    when(
+      mockAuthService.signUpWithEmailPassword(any, any, any),
+    ).thenAnswer((_) async => mockUserCredential);
+
+    await tester.pumpWidget(
+      MaterialApp(home: RegisterScreen(authService: mockAuthService)),
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(Key('name')), '');
+    await tester.enterText(find.byKey(Key('email')), '');
+    await tester.enterText(find.byKey(Key('password')), '');
+
+    FocusManager.instance.primaryFocus?.unfocus();
+    await tester.pump();
+
+    await tester.tap(find.byKey(Key('registerButton')));
+
+    await tester.pump(Duration(seconds: 3));
+
+    await tester.pumpAndSettle();
+
+    expect(find.text('O nome não pode estar vazio.'), findsOneWidget);
+    expect(find.text('O e-mail não pode estar vazio.'), findsOneWidget);
+    expect(find.text('Por favor, digite a senha.'), findsOneWidget);
+  });
+
+  testWidgets('deve exibir erros quando os campos forem inválidos', (
+    WidgetTester tester,
+  ) async {
+    final mockAuthService = MockAuthService();
+    final mockUserCredential = MockUserCredential();
+
+    when(mockAuthService.isValidEmail(any)).thenReturn(false);
+
+    when(
+      mockAuthService.signUpWithEmailPassword(any, any, any),
+    ).thenAnswer((_) async => mockUserCredential);
+
+    await tester.pumpWidget(
+      MaterialApp(home: RegisterScreen(authService: mockAuthService)),
+    );
+
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byKey(Key('name')), 'Te1');
+    await tester.enterText(find.byKey(Key('email')), 'teste@');
+    await tester.enterText(find.byKey(Key('password')), 'senha1@');
+
+    await tester.tap(find.byKey(Key('registerButton')));
+    await tester.pumpAndSettle();
+
+    expect(find.text('O nome contém caracteres inválidos.'), findsOneWidget);
+    expect(find.text('Formato de e-mail inválido.'), findsOneWidget);
+    expect(
+      find.textContaining(
+        'A senha deve conter entre 8 e 40 caracteres, ao menos uma letra maiúscula, uma minúscula, um caractere especial e um número.',
+      ),
+      findsOneWidget,
+    );
+
+    await Future.delayed(Duration(seconds: 3));
+  });
+}

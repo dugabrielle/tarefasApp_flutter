@@ -210,74 +210,85 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (BuildContext context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            return AlertDialog(
-              title: const Text('Editar Nota'),
-              content: Container(
-                constraints: const BoxConstraints(maxHeight: 300),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextField(
-                        controller: _tituloController,
-                        decoration: const InputDecoration(labelText: 'Título'),
-                        maxLength: 80,
-                        maxLines: null,
-                        onChanged: (_) => setState(() {}),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: _descricaoController,
-                        decoration: const InputDecoration(
-                          labelText: 'Descrição (opcional)',
-                        ),
-                        maxLength: 80,
-                        maxLines: null,
-                      ),
-                      if (_tituloController.text.isEmpty)
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            'O Título não pode ser vazio!',
-                            style: TextStyle(color: Colors.red, fontSize: 14),
-                          ),
-                        ),
-                    ],
-                  ),
-                ),
-              ),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close, color: Colors.purple),
-                      iconSize: 22,
+            return Center(
+              child: SingleChildScrollView(
+                child: AlertDialog(
+                  title: const Text('Editar Nota'),
+                  content: Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
                     ),
-                    IconButton(
-                      onPressed: () {
-                        if (_tituloController.text.isEmpty) {
-                          setState(() {});
-                          return;
-                        }
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: _tituloController,
+                            decoration: const InputDecoration(
+                              labelText: 'Título',
+                            ),
+                            maxLength: 80,
+                            maxLines: null,
+                            onChanged: (_) => setState(() {}),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            controller: _descricaoController,
+                            decoration: const InputDecoration(
+                              labelText: 'Descrição (opcional)',
+                            ),
+                            maxLength: 80,
+                            maxLines: null,
+                          ),
+                          if (_tituloController.text.isEmpty)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'O Título não pode ser vazio!',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.close, color: Colors.purple),
+                          iconSize: 22,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            if (_tituloController.text.isEmpty) {
+                              setState(() {});
+                              return;
+                            }
 
-                        todo.titulo = _tituloController.text;
-                        todo.descricao = _descricaoController.text;
+                            todo.titulo = _tituloController.text;
+                            todo.descricao = _descricaoController.text;
 
-                        // atualiza
-                        _firestoreService.editarTarefa(todo.id, todo);
+                            // atualiza
+                            _firestoreService.editarTarefa(todo.id, todo);
 
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.save, color: Colors.purple),
-                      iconSize: 22,
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.save, color: Colors.purple),
+                          iconSize: 22,
+                        ),
+                      ],
                     ),
                   ],
                 ),
-              ],
+              ),
             );
           },
         );
@@ -315,92 +326,101 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text(
-                'Adicionar Nota',
-                style: TextStyle(fontSize: 28),
-              ),
-
-              content: Container(
-                constraints: const BoxConstraints(maxHeight: 400),
-                child: SingleChildScrollView(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextField(
-                        controller: _tituloController,
-                        decoration: const InputDecoration(
-                          labelText: 'Título',
-                          labelStyle: TextStyle(fontSize: 18),
-                        ),
-                        maxLength: 80,
-                        maxLines: null,
-                        style: const TextStyle(fontSize: 26),
-                        onChanged: (_) => setState(() {}),
-                      ),
-                      const SizedBox(height: 10),
-                      TextField(
-                        controller: _descricaoController,
-                        decoration: const InputDecoration(
-                          labelText: 'Descrição (opcional)',
-                          labelStyle: TextStyle(fontSize: 18),
-                        ),
-                        maxLength: 80,
-                        maxLines: null,
-                        style: const TextStyle(fontSize: 26),
-                      ),
-                      if (_tituloController.text.isEmpty)
-                        const Padding(
-                          padding: EdgeInsets.only(top: 8.0),
-                          child: Text(
-                            'O Título não pode ser vazio!',
-                            style: TextStyle(color: Colors.red, fontSize: 17),
-                          ),
-                        ),
-                    ],
+        return Center(
+          child: SingleChildScrollView(
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return AlertDialog(
+                  title: const Text(
+                    'Adicionar Nota',
+                    style: TextStyle(fontSize: 28),
                   ),
-                ),
-              ),
-              actions: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.close, color: Colors.purple),
-                      iconSize: 30,
+
+                  content: Container(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.6,
                     ),
-                    IconButton(
-                      onPressed: () async {
-                        if (_tituloController.text.isEmpty) {
-                          setState(() {});
-                          return;
-                        }
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          TextField(
+                            controller: _tituloController,
+                            decoration: const InputDecoration(
+                              labelText: 'Título',
+                              labelStyle: TextStyle(fontSize: 18),
+                            ),
+                            maxLength: 80,
+                            maxLines: null,
+                            style: const TextStyle(fontSize: 26),
+                            onChanged: (_) => setState(() {}),
+                          ),
+                          const SizedBox(height: 10),
+                          TextField(
+                            controller: _descricaoController,
+                            decoration: const InputDecoration(
+                              labelText: 'Descrição (opcional)',
+                              labelStyle: TextStyle(fontSize: 18),
+                            ),
+                            maxLength: 80,
+                            maxLines: null,
+                            style: const TextStyle(fontSize: 26),
+                          ),
+                          if (_tituloController.text.isEmpty)
+                            const Padding(
+                              padding: EdgeInsets.only(top: 8.0),
+                              child: Text(
+                                'O Título não pode ser vazio!',
+                                style: TextStyle(
+                                  color: Colors.red,
+                                  fontSize: 17,
+                                ),
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  actions: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.close, color: Colors.purple),
+                          iconSize: 30,
+                        ),
+                        IconButton(
+                          onPressed: () async {
+                            if (_tituloController.text.isEmpty) {
+                              setState(() {});
+                              return;
+                            }
 
-                        final novaTarefa = ToDo(
-                          id: DateTime.now().toString(), // gera o id
-                          titulo: _tituloController.text,
-                          descricao: _descricaoController.text,
-                          checkbox: false,
-                        );
+                            final novaTarefa = ToDo(
+                              id: DateTime.now().toString(), // gera o id
+                              titulo: _tituloController.text,
+                              descricao: _descricaoController.text,
+                              checkbox: false,
+                            );
 
-                        await _firestoreService.addNota(novaTarefa);
+                            await _firestoreService.addNota(novaTarefa);
 
-                        if (!context.mounted) return;
-                        Navigator.pop(context);
-                      },
-                      icon: const Icon(Icons.save, color: Colors.purple),
-                      iconSize: 30,
+                            if (!context.mounted) return;
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.save, color: Colors.purple),
+                          iconSize: 30,
+                        ),
+                      ],
                     ),
                   ],
-                ),
-              ],
-            );
-          },
+                );
+              },
+            ),
+          ),
         );
       },
     );

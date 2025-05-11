@@ -21,7 +21,6 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              Colors.transparent,
               Color(0xFF973ED2),
               Color(0xFF785AFE),
               Color(0xFF000000),
@@ -33,7 +32,7 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
         child: Stack(
           children: [
             Padding(
-              padding: const EdgeInsets.only(top: 10, left: 10),
+              padding: const EdgeInsets.only(top: 50, left: 10),
               child: Positioned(
                 child: IconButton(
                   onPressed: () {

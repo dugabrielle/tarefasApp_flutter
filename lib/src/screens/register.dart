@@ -2,7 +2,6 @@ import 'package:app_tarefas/src/services/firebase_auth.dart';
 import 'package:app_tarefas/src/widgets/input_decorations.dart';
 import 'package:app_tarefas/src/widgets/snackbar.dart';
 import 'package:flutter/material.dart';
-import 'package:app_tarefas/src/services/firebase_auth.dart';
 
 class RegisterScreen extends StatefulWidget {
   final AuthService authService;

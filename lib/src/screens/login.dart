@@ -31,7 +31,6 @@ class _LoginScreenState extends State<LoginScreen> {
           if (snapshot.hasData) {
             return HomeScreen();
           }
-
           return Stack(
             children: [
               IconButton(
@@ -41,6 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
                 padding: const EdgeInsets.only(top: 50, left: 10),
               ),
+              
               const Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
